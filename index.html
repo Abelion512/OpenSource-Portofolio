@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Abelion • Portofolio</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            base: { bg: "#0b1220", card: "#0f172a", line: "#1f2937", text: "#e5e7eb", mute: "#94a3b8" },
+            accent: { a: "#7c3aed", b: "#22d3ee" }
+          },
+          boxShadow: {
+            glow: "0 20px 50px rgba(124,58,237,.45)",
+            glass: "inset 0 1px 0 rgba(255,255,255,.08), 0 20px 40px rgba(2,6,23,.60)",
+            'glow-blue': "0 20px 50px rgba(34,211,238,.35)",
+            'card-hover': "0 25px 60px rgba(124,58,237,.40), inset 0 1px 0 rgba(255,255,255,.1)"
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 3s ease-in-out infinite',
+            'gradient-x': 'gradient-x 15s ease infinite',
+            'shine': 'shine 2s ease-in-out infinite alternate'
+          },
+          keyframes: {
+            float: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-10px)' } },
+            'gradient-x': { '0%, 100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+            shine: { '0%': { opacity: '.5' }, '100%': { opacity: '1' } }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    html,body{height:100%}
+    
+    /* Dark mode styles */
+    .dark body{
+      margin:0; overflow-x:hidden;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      background:
+        radial-gradient(1400px 700px at 15% -10%, rgba(124,58,237,.25), transparent 50%),
+        radial-gradient(1200px 600px at 85% 110%, rgba(34,211,238,.20), transparent 50%),
+        radial-gradient(800px 400px at 50% 50%, rgba(124,58,237,.08), transparent 70%),
+        linear-gradient(135deg, #0b1220 0%, #0f172a 50%, #0b1220 100%);
+      color:#e5e7eb;
+      font:16px/1.65 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background-attachment: fixed;
+    }
+    
+    /* Light mode styles */
+    body{
+      margin:0; overflow-x:hidden;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      background:
+        radial-gradient(1400px 700px at 15% -10%, rgba(124,58,237,.15), transparent 50%),
+        radial-gradient(1200px 600px at 85% 110%, rgba(34,211,238,.12), transparent 50%),
+        radial-gradient(800px 400px at 50% 50%, rgba(124,58,237,.05), transparent 70%),
+        linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f8fafc 100%);
+      color:#1e293b;
+      font:16px/1.65 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background-attachment: fixed;
+      transition: all 0.3s ease;
+    }
+    
+    /* Import Inter font */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    
+    /* Enhanced spacing */
+    .section-pad{padding:clamp(6rem, 12vw, 12rem) 0}
+    .wrap{max-width:1200px; margin-inline:auto; padding-inline:clamp(20px,5vw,32px); overflow-x:clip}
+    img{display:block; max-width:100%; height:auto}
+
+    /* Enhanced glass effect - responsive to theme */
+    .dark .glass{
+      position:relative; 
+      border-radius:1.25rem; 
+      border:1px solid rgba(148,163,184,.25); 
+      background:rgba(15,23,42,.75);
+      backdrop-filter:blur(20px) saturate(180%);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 10px 30px rgba(2,6,23,.3),
+        0 0 0 1px rgba(255,255,255,.02);
+      overflow:hidden;
+    }
+    
+    .glass{
+      position:relative; 
+      border-radius:1.25rem; 
+      border:1px solid rgba(148,163,184,.4); 
+      background:rgba(255,255,255,.8);
+      backdrop-filter:blur(20px) saturate(180%);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.3),
+        0 10px 30px rgba(0,0,0,.1),
+        0 0 0 1px rgba(0,0,0,.03);
+      overflow:hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .glass::before{
+      content:""; 
+      position:absolute; 
+      inset:0; 
+      background:linear-gradient(135deg, rgba(255,255,255,.08) 0%, transparent 50%);
+      pointer-events:none;
+    }
+    
+    .glass > *{position:relative; z-index:1}
+    
+    /* Enhanced hover effects */
+    .hoverable{
+      transition:all .4s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor:pointer;
+    }
+    
+    .dark .hoverable:hover{
+      transform:translateY(-8px) scale(1.02); 
+      box-shadow:0 25px 60px rgba(124,58,237,.40), inset 0 1px 0 rgba(255,255,255,.1);
+      border-color:rgba(34,211,238,.4);
+    }
+    
+    .hoverable:hover{
+      transform:translateY(-8px) scale(1.02); 
+      box-shadow:0 25px 60px rgba(124,58,237,.30), inset 0 1px 0 rgba(255,255,255,.2);
+      border-color:rgba(34,211,238,.6);
+    }
+
+    /* Enhanced skeleton with shimmer */
+    .skel{
+      border-radius:1rem; 
+      background:linear-gradient(120deg, 
+        rgba(15,23,42,.6) 0%, 
+        rgba(124,58,237,.2) 25%, 
+        rgba(15,23,42,.6) 50%, 
+        rgba(34,211,238,.2) 75%, 
+        rgba(15,23,42,.6) 100%
+      ); 
+      background-size:300% 100%; 
+      animation:shimmer 2s ease infinite;
+    }
+    
+    @keyframes shimmer{
+      0%{background-position:-300% 0}
+      100%{background-position:300% 0}
+    }
+
+    /* Enhanced route transition */
+    .route{
+      pointer-events:none; 
+      position:fixed; 
+      inset:0; 
+      background:
+        radial-gradient(1000px 500px at 50% -10%, rgba(124,58,237,.35), transparent 50%), 
+        linear-gradient(135deg, #0b1220 0%, #0f172a 100%); 
+      transform:translateY(100%); 
+      z-index:70;
+    }
+    
+    /* Floating animation for hero elements */
+    .float-anim{animation:float 6s ease-in-out infinite}
+    .float-anim:nth-child(2){animation-delay:-2s}
+    .float-anim:nth-child(3){animation-delay:-4s}
+    
+    /* Gradient text effects */
+    .gradient-text{
+      background:linear-gradient(135deg, #7c3aed 0%, #22d3ee 50%, #7c3aed 100%);
+      background-size:300% 100%;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      animation:gradient-x 6s ease infinite;
+    }
+    
+    /* Enhanced button styles */
+    .btn-primary{
+      background:linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+      box-shadow:0 10px 30px rgba(124,58,237,.4), inset 0 1px 0 rgba(255,255,255,.2);
+      transition:all .3s cubic-bezier(0.4, 0, 0.2, 1);
+      position:relative;
+      overflow:hidden;
+    }
+    
+    .btn-primary::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.2) 0%, transparent 50%);
+      transform:translateX(-100%);
+      transition:transform .6s ease;
+    }
+    
+    .btn-primary:hover::before{transform:translateX(100%)}
+    .btn-primary:hover{transform:translateY(-2px); box-shadow:0 15px 40px rgba(124,58,237,.5)}
+    
+    .btn-secondary{
+      backdrop-filter:blur(10px);
+      border:1px solid rgba(148,163,184,.3);
+      transition:all .3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .dark .btn-secondary{
+      background:rgba(15,23,42,.8);
+    }
+    
+    .btn-secondary{
+      background:rgba(255,255,255,.6);
+    }
+    
+    .btn-secondary:hover{
+      border-color:rgba(34,211,238,.6);
+      box-shadow:0 10px 30px rgba(34,211,238,.2);
+      transform:translateY(-2px);
+    }
+    
+    /* Enhanced navbar */
+    .dark .navbar-glass{
+      background:rgba(11,18,32,.85);
+      backdrop-filter:blur(20px) saturate(180%);
+      border-bottom:1px solid rgba(148,163,184,.15);
+      box-shadow:0 10px 30px rgba(2,6,23,.2);
+    }
+    
+    .navbar-glass{
+      background:rgba(248,250,252,.9);
+      backdrop-filter:blur(20px) saturate(180%);
+      border-bottom:1px solid rgba(148,163,184,.25);
+      box-shadow:0 10px 30px rgba(0,0,0,.08);
+      transition: all 0.3s ease;
+    }
+    
+    /* Micro interactions */
+    .micro-bounce{
+      animation:bounce 2s infinite;
+      animation-delay:3s;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar{width:8px}
+    .dark ::-webkit-scrollbar-track{background:rgba(15,23,42,.5)}
+    ::-webkit-scrollbar-track{background:rgba(148,163,184,.2)}
+    ::-webkit-scrollbar-thumb{background:linear-gradient(180deg, #7c3aed, #22d3ee); border-radius:4px}
+    ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg, #8b5cf6, #06b6d4)}
+    
+    /* Enhanced music player visual */
+    .music-playing{
+      animation:pulse-slow 2s ease-in-out infinite;
+    }
+    
+    .music-playing img{
+      animation:spin 8s linear infinite;
+    }
+    
+    /* Glow effects on focus */
+    input:focus, textarea:focus, button:focus{
+      outline:none;
+      box-shadow:0 0 0 2px rgba(34,211,238,.5), 0 10px 30px rgba(34,211,238,.2);
+    }
+    
+    /* Enhanced skill cards */
+    .dark .skill-card{
+      background:linear-gradient(135deg, rgba(15,23,42,.9) 0%, rgba(30,41,59,.8) 100%);
+      transition:all .4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .skill-card{
+      background:linear-gradient(135deg, rgba(255,255,255,.7) 0%, rgba(241,245,249,.8) 100%);
+      transition:all .4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .skill-card:hover{
+      background:linear-gradient(135deg, rgba(124,58,237,.15) 0%, rgba(34,211,238,.1) 100%);
+    }
+    
+    /* App logo sizing - make cards fit content */
+    .app-card{
+      aspect-ratio: 1;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    
+    .app-logo{
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    
+    /* Music player enhancements */
+    .music-preview{
+      display: none;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.8) 100%);
+      padding: 12px;
+      border-radius: 0 0 1.25rem 1.25rem;
+    }
+    
+    .music-preview.active{ display: block; }
+    
+    .progress-bar{
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,.2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill{
+      height: 100%;
+      background: linear-gradient(90deg, #7c3aed, #22d3ee);
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+    
+    /* Theme text color adjustments */
+    .dark .text-theme{color: #e5e7eb}
+    .text-theme{color: #1e293b}
+    .dark .text-theme-mute{color: #94a3b8}
+    .text-theme-mute{color: #64748b}
+  </style>
+</head>
+<body>
+  <!-- Audio player untuk preview -->
+  <audio id="audioPlayer" preload="none" crossorigin="anonymous"></audio>
+
+  <!-- Enhanced page-transition layer -->
+  <div id="route" class="route"></div>
+
+  <!-- Enhanced Navbar with better glass effect -->
+  <header class="sticky top-0 z-50 navbar-glass">
+    <div class="wrap py-4 flex items-center justify-between gap-3">
+      <a href="#hero" class="font-bold tracking-wide text-xl gradient-text">Abelion</a>
+
+      <nav id="nav" class="hidden md:flex items-center gap-6 text-base text-base-mute">
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:text-white" href="#about">About me</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:text-white" href="#skills">Skills</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:text-white" href="#apps">Apps</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:text-white" href="#films">Films</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:text-white" href="#music">Music</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:text-white" href="#contact">Contact</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <button id="themeBtn" class="px-4 py-2 rounded-xl glass hover:scale-105 transition-all duration-300 text-sm font-medium">🌙</button>
+        <button id="menuBtn" class="md:hidden px-4 py-2 rounded-xl glass hover:scale-105 transition-all duration-300 text-sm font-medium">☰</button>
+      </div>
+    </div>
+    <div id="mobileNav" class="md:hidden hidden glass mx-4 mb-4 rounded-xl">
+      <div class="wrap py-4 flex flex-col gap-3 text-base text-base-mute">
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:text-white" href="#about">About</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:text-white" href="#skills">Skills</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:text-white" href="#apps">Apps</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:text-white" href="#films">Films</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:text-white" href="#music">Music</a>
+        <a class="px-3 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:text-white" href="#contact">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Enhanced Hero Section -->
+  <section id="hero" class="wrap section-pad">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div class="space-y-6" data-anim>
+        <span class="inline-flex items-center px-4 py-2 rounded-full glass text-sm font-medium animate-pulse-slow">
+          ✨ HTML5 • Vanilla + GSAP
+        </span>
+        <h1 class="text-4xl md:text-7xl font-black leading-tight">
+          <span class="gradient-text">Portofolio</span> by <br/>
+          <span class="text-white">Abelion</span> <span class="gradient-text">Lavv</span>.
+        </h1>
+        <p class="text-base-mute text-xl md:text-2xl font-light leading-relaxed max-w-lg">
+          Bukan pamer framework. Hanya apps yang dipakai, film favorit, musik favorit.
+        </p>
+        <div class="flex flex-wrap gap-4 pt-4">
+          <a href="#apps" class="btn-primary px-8 py-4 rounded-2xl text-black font-bold text-lg">Apps</a>
+          <a href="#films" class="btn-secondary px-8 py-4 rounded-2xl font-semibold text-lg">Films</a>
+          <a href="#music" class="btn-secondary px-8 py-4 rounded-2xl font-semibold text-lg">Music</a>
+        </div>
+      </div>
+
+      <!-- Enhanced Hero preview with floating animation -->
+      <div class="glass hoverable aspect-[4/3] overflow-hidden js-anim-card float-anim" data-anim>
+        <img src="https://picsum.photos/1200/800" alt="Hero Preview" class="w-full h-full object-cover opacity-95" />
+        <div class="absolute inset-0 bg-gradient-to-br from-accent-a/20 to-accent-b/20"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced About Section -->
+  <section id="about" class="wrap section-pad">
+    <h2 class="text-4xl md:text-6xl font-black mb-8 gradient-text" data-anim>About Me</h2>
+    <div class="grid md:grid-cols-[180px,1fr] gap-8 items-start">
+      <!-- Enhanced Avatar with glow effect -->
+      <div class="w-44 h-44 rounded-3xl border-2 border-accent-b/30 overflow-hidden glass flex items-center justify-center js-anim-card float-anim" data-anim style="box-shadow: 0 0 50px rgba(34,211,238,.3)">
+        <img src="https://ik.imagekit.io/focustimerin/preview%20image.jpg?updatedAt=1757342575750" alt="Avatar" class="w-full h-full object-cover" />
+      </div>
+      <div class="space-y-4" data-anim>
+        <p class="text-base-mute text-xl md:text-2xl font-light leading-relaxed max-w-prose">
+          Manusia biasa yang suka berkreasi, berkolaborasi, berdebat, dan berinovasi bersama AI.
+        </p>
+        <h3 class="text-2xl font-bold">
+          <a href="https://abelink-portofolio.vercel.app/" target="_blank" 
+             class="gradient-text hover:opacity-80 transition-opacity duration-300">
+            Click for More
+          </a>
+        </h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Skills Section -->
+  <section id="skills" class="wrap section-pad">
+    <h2 class="text-4xl md:text-6xl font-black mb-8 gradient-text" data-anim>Skills</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="skill-card glass p-6 hoverable flex items-start gap-4 js-anim-card" data-anim>
+        <div class="w-12 h-12 rounded-xl glass flex items-center justify-center">
+          <img class="w-8 h-8" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JS"/>
+        </div>
+        <div>
+          <h3 class="font-bold mb-2 text-xl">Creative Thinking</h3>
+          <p class="text-sm text-base-mute leading-relaxed">Membingkai masalah, variasi solusi.</p>
+        </div>
+      </div>
+      <div class="skill-card glass p-6 hoverable flex items-start gap-4 js-anim-card" data-anim>
+        <div class="w-12 h-12 rounded-xl glass flex items-center justify-center">
+          <img class="w-8 h-8" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma"/>
+        </div>
+        <div>
+          <h3 class="font-bold mb-2 text-xl">UI/UX</h3>
+          <p class="text-sm text-base-mute leading-relaxed">Hierarchy, copy jelas, affordance.</p>
+        </div>
+      </div>
+      <div class="skill-card glass p-6 hoverable flex items-start gap-4 js-anim-card" data-anim>
+        <div class="w-12 h-12 rounded-xl glass flex items-center justify-center">
+          <img class="w-8 h-8" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gsap/gsap-original.svg" alt="GSAP"/>
+        </div>
+        <div>
+          <h3 class="font-bold mb-2 text-xl">Animation</h3>
+          <p class="text-sm text-base-mute leading-relaxed">GSAP + ScrollTrigger.</p>
+        </div>
+      </div>
+      <div class="skill-card glass p-6 hoverable flex items-start gap-4 js-anim-card" data-anim>
+        <div class="w-12 h-12 rounded-xl glass flex items-center justify-center">
+          <img class="w-8 h-8" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5"/>
+        </div>
+        <div>
+          <h3 class="font-bold mb-2 text-xl">Delivery</h3>
+          <p class="text-sm text-base-mute leading-relaxed">Optimasi, lazy media, tanpa overflow.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Apps Section -->
+  <section id="apps" class="wrap section-pad">
+    <div class="flex items-end justify-between gap-4 mb-8">
+      <h2 class="text-4xl md:text-6xl font-black gradient-text" data-anim>Apps</h2>
+      <p class="text-base-mute text-sm font-medium" data-anim>apps i use</p>
+    </div>
+    <div id="appsGrid" class="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6" aria-live="polite"></div>
+  </section>
+
+  <!-- Enhanced Films Section -->
+  <section id="films" class="wrap section-pad">
+    <h2 class="text-4xl md:text-6xl font-black mb-8 gradient-text" data-anim>Films</h2>
+    <div id="filmsGrid" class="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4" aria-live="polite"></div>
+  </section>
+
+  <!-- Enhanced Music Section -->
+  <section id="music" class="wrap section-pad">
+    <h2 class="text-4xl md:text-6xl font-black mb-8 gradient-text" data-anim>Music</h2>
+    <div id="musicGrid" class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3" aria-live="polite"></div>
+  </section>
+
+  <!-- Enhanced Contact Section -->
+  <section id="contact" class="wrap section-pad">
+    <h2 class="text-4xl md:text-6xl font-black mb-8 gradient-text" data-anim>Contact</h2>
+    <form id="contactForm" class="glass p-8 grid gap-4 max-w-lg" data-anim>
+      <input id="name" class="px-4 py-3 rounded-xl bg-black/40 border border-slate-600/50 focus:border-accent-b/60 transition-all duration-300 font-medium" placeholder="Nama"/>
+      <input id="email" type="email" class="px-4 py-3 rounded-xl bg-black/40 border border-slate-600/50 focus:border-accent-b/60 transition-all duration-300 font-medium" placeholder="Email"/>
+      <textarea id="message" rows="5" class="px-4 py-3 rounded-xl bg-black/40 border border-slate-600/50 focus:border-accent-b/60 transition-all duration-300 font-medium resize-none" placeholder="Pesan"></textarea>
+      <button class="btn-primary px-6 py-4 rounded-xl text-black font-bold text-lg mt-2">Kirim Pesan</button>
+    </form>
+  </section>
+
+  <!-- Enhanced Footer -->
+  <footer class="border-t border-slate-700/40 glass">
+    <div class="wrap py-8 text-sm text-base-mute flex items-center justify-between">
+      <span class="font-medium">© <span id="year"></span> Abelion</span>
+      <a href="#hero" class="btn-secondary px-4 py-2 rounded-xl hover:scale-105 transition-all duration-300 micro-bounce">
+        ↑
+      </a>
+    </div>
+  </footer>
+
+  <!-- Dummy data (FULL EDITABLE) -->
+  <script>
+    const apps = [
+      { label:'Donghub',    logo:'https://ik.imagekit.io/focustimerin/donghub%20logo.jpg?updatedAt=1757900623868', link:'https://donghub.net/' },
+      { label:'Discord',    logo:'https://ik.imagekit.io/focustimerin/dc%20logo.jpg?updatedAt=1757900899117', link:'https://discord.com/channels/@me' }
+    ];
+
+    const films = [
+      { poster:'https://ik.imagekit.io/focustimerin/hidden%20love%20poster.jpg?updatedAt=1757899802585', title:'Hidden Love', info:'Zhu Yi • 2023', link:'https://ga-mobile-api.loklok.chat/cms/web/share/detail?id=36258&category=1&episodeId=262969&language=en&clientType=android_folas' },
+      { poster:'https://via.placeholder.com/600x900/0f766e/ffffff?text=Arrival',      title:'Unavailable',     info:'Unknown :)', link:'https://example.com/preview/arrival' },
+      { poster:'https://ik.imagekit.io/focustimerin/btth%20poster.jpg?updatedAt=1757865755085',     title:'BTTH',    info:'Tiancan Tudou • 2017', link:'https://play.google.com/store/apps/details?id=com.anichin.donghub' },
+      { poster:'https://ik.imagekit.io/focustimerin/renegade%20motor%20poster.jpg?updatedAt=1757899663169', title:'Renegade Immortal', info:'Er Gen • 2023', link:'https://play.google.com/store/apps/details?id=com.anichin.donghub' }
+    ];
+
+    /* 
+      MUSIC DATA:
+      - 'link' dipakai untuk tautan pada judul (ke streaming page, bebas).
+      - 'preview' adalah URL audio langsung (mp3/ogg) untuk diputar saat tombol ▶ ditekan.
+      - Contoh di bawah pakai SoundHelix (bebas dipakai untuk demo). Ganti kapan saja.
+    */
+    const music = [
+      { 
+        cover:'https://ik.imagekit.io/focustimerin/penjaga%20hati.jpg?updatedAt=1757865127357',
+        title:'Penjaga Hati',
+        sub:'Nadhif Basalamah • 2023',
+        link:'https://open.spotify.com/track/7F4tV8SiUy6itZTdAzdafO',
+        preview:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+      },
+      { 
+        cover:'https://via.placeholder.com/400x400/22d3ee/0b1220?text=Album',
+        title:'No 2.',
+        sub:'Unknown • -',
+        link:'https://example.com/preview/humble',
+        preview:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
+      },
+      { 
+        cover:'https://ik.imagekit.io/focustimerin/Anggis.jpg?updatedAt=1757864353729',
+        title:'Dirimu Yang Dulu',
+        sub:'Anggis Devaki • 2024',
+        link:'https://open.spotify.com/track/4NTJKqpoAlTG3RcPB3y4C7?si=8c2e746a50884332',
+        preview:'https://patient-indigo-6ix40qbugn.edgeone.app/dirimu%20yang%20dulu.mp3'
+      }
+    ];
+  </script>
+
+  <!-- Enhanced Render + Interactions -->
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    const $  = (s,ctx=document)=>ctx.querySelector(s);
+    const $$ = (s,ctx=document)=>Array.from(ctx.querySelectorAll(s));
+
+    // tahun
+    $('#year').textContent = new Date().getFullYear();
+
+    // Dark mode toggle (tetap seperti versi sebelumnya)
+    const themeBtn = $('#themeBtn');
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    themeBtn.textContent = document.documentElement.classList.contains('dark') ? '🌙' : '🌞';
+    themeBtn.addEventListener('click', () => {
+      const willDark = !document.documentElement.classList.contains('dark');
+      document.documentElement.classList.toggle('dark', willDark);
+      localStorage.setItem('theme', willDark ? 'dark' : 'light');
+      themeBtn.textContent = willDark ? '🌙' : '🌞';
+      gsap.to('body', { duration: 0.5, ease: 'power2.out' });
+    });
+
+    // Mobile nav
+    const menuBtn = $('#menuBtn'); 
+    const mobileNav = $('#mobileNav');
+    menuBtn.addEventListener('click', ()=>{
+      const show = mobileNav.classList.contains('hidden');
+      mobileNav.classList.toggle('hidden');
+      if (show) {
+        gsap.fromTo(mobileNav, {height:0, opacity:0, scale:0.95}, {height:'auto', opacity:1, scale:1, duration:.4, ease:'power2.out'});
+      }
+    });
+
+    // Route transition
+    const route = $('#route');
+    document.addEventListener('click', e=>{
+      const a = e.target.closest('a[href^="#"]'); if(!a) return;
+      e.preventDefault();
+      const target = a.getAttribute('href');
+      gsap.timeline()
+        .set(route,{pointerEvents:'auto'})
+        .to(route,{yPercent:-100, duration:.4, ease:'power2.in'})
+        .call(()=>location.hash = target)
+        .to(route,{yPercent:-200, duration:.4, ease:'power2.out'})
+        .set(route,{yPercent:100, pointerEvents:'none'});
+    });
+
+    // RENDER: Apps
+    const appsGrid = $('#appsGrid');
+    appsGrid.innerHTML = apps.map(a => `
+      <div class="glass hoverable flex items-center justify-center aspect-square js-anim-card group" onclick="window.open('${a.link}','_blank')">
+        <img src="${a.logo}" alt="${a.label}" loading="lazy"
+             class="w-16 h-16 md:w-18 md:h-18 object-contain opacity-90 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110" />
+      </div>
+    `).join('');
+
+    // RENDER: Films
+    const filmsGrid = $('#filmsGrid');
+    filmsGrid.innerHTML = films.map(f => `
+      <div class="glass hoverable overflow-hidden js-anim-card group">
+        <div class="relative overflow-hidden">
+          <img src="${f.poster}" alt="${f.title}" loading="lazy"
+               class="w-full aspect-[2/3] object-cover opacity-95 transition-all duration-500 group-hover:scale-110" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-accent-a/0 to-accent-b/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        </div>
+        <div class="p-4">
+          <h3 class="font-bold text-lg mb-1">
+            <a href="${f.link}" target="_blank" class="gradient-text hover:opacity-80 transition-opacity duration-300">${f.title}</a>
+          </h3>
+          <p class="text-sm text-base-mute font-medium">${f.info}</p>
+        </div>
+      </div>
+    `).join('');
+
+    // RENDER: Music (dengan preview audio)
+    const musicGrid = $('#musicGrid');
+    musicGrid.innerHTML = music.map(m => {
+      const hasPreview = !!m.preview;
+      return `
+        <div class="glass hoverable p-4 flex items-center gap-4 js-anim-card group">
+          <div class="relative">
+            <img src="${m.cover}" alt="${m.title}" loading="lazy"
+                 class="w-20 h-20 rounded-2xl object-cover transition-all duration-300" />
+            <div class="absolute inset-0 bg-accent-a/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
+          <div class="min-w-0 flex-1">
+            <h4 class="font-bold leading-tight truncate mb-1">
+              <a href="${m.link}" target="_blank" class="gradient-text hover:opacity-80 transition-opacity duration-300">${m.title}</a>
+            </h4>
+            <p class="text-sm text-base-mute font-medium">${m.sub}</p>
+          </div>
+          <button class="ml-auto px-4 py-2 rounded-xl glass transition-all duration-300 font-bold ${hasPreview ? 'hover:scale-110' : 'opacity-50 cursor-not-allowed'}"
+                  data-play ${hasPreview ? `data-audio="${m.preview}"` : 'disabled title="Tambahkan m.preview agar bisa diputar"'}>
+            ▶
+          </button>
+        </div>
+      `
+    }).join('');
+
+    // Card click animation (kecuali klik link judul)
+    document.addEventListener('click', e=>{
+      const isTitleLink = e.target.closest('h3 a, h4 a'); if (isTitleLink) return;
+      const card = e.target.closest('.js-anim-card'); if (!card) return;
+      gsap.timeline()
+        .to(card, {scale:1.05, duration:.1, ease:'power2.out'})
+        .to(card, {scale:1, duration:.3, ease:'elastic.out(1, 0.5)'});
+      gsap.fromTo(card, {boxShadow:'0 0 0 rgba(124,58,237,0)'}, {boxShadow:'0 20px 60px rgba(124,58,237,.4), 0 0 0 1px rgba(34,211,238,.3)', duration:.3, yoyo:true, repeat:1});
+    });
+
+    // MUSIC: play/pause preview
+    const audioPlayer = $('#audioPlayer');
+    let currentBtn = null;
+
+    musicGrid.addEventListener('click', e => {
+      const btn = e.target.closest('[data-play]');
+      if (!btn || btn.disabled) return;
+
+      const src = btn.getAttribute('data-audio');
+      const card = btn.closest('.glass');
+      const img  = card.querySelector('img');
+      const isPlaying = btn.getAttribute('aria-pressed') === 'true';
+
+      if (isPlaying) {
+        audioPlayer.pause();
+        btn.setAttribute('aria-pressed','false');
+        btn.textContent = '▶';
+        card.classList.remove('music-playing');
+        img.style.animation = '';
+        gsap.to(card, {scale:1, duration:.3, ease:'power2.out'});
+        currentBtn = null;
+      } else {
+        if (currentBtn && currentBtn !== btn) {
+          // reset previously playing
+          currentBtn.setAttribute('aria-pressed','false');
+          currentBtn.textContent = '▶';
+          const prevCard = currentBtn.closest('.glass');
+          const prevImg  = prevCard.querySelector('img');
+          prevCard.classList.remove('music-playing');
+          prevImg.style.animation = '';
+          gsap.to(prevCard, {scale:1, duration:.3, ease:'power2.out'});
+        }
+        // play new
+        audioPlayer.src = src;
+        audioPlayer.play().catch(()=>{});
+        btn.setAttribute('aria-pressed','true');
+        btn.textContent = '⏸';
+        card.classList.add('music-playing');
+        img.style.animation = 'spin 8s linear infinite';
+        gsap.to(card, {scale:1.02, duration:.3, ease:'power2.out'});
+        currentBtn = btn;
+      }
+
+      // press feedback
+      gsap.timeline().to(btn,{scale:.9, duration:.1, ease:'power2.out'}).to(btn,{scale:1, duration:.2, ease:'elastic.out(1, .5)'});
+    });
+
+    // when audio ends
+    audioPlayer.addEventListener('ended', () => {
+      if (!currentBtn) return;
+      currentBtn.setAttribute('aria-pressed','false');
+      currentBtn.textContent = '▶';
+      const card = currentBtn.closest('.glass');
+      const img  = card.querySelector('img');
+      card.classList.remove('music-playing');
+      img.style.animation = '';
+      gsap.to(card, {scale:1, duration:.3, ease:'power2.out'});
+      currentBtn = null;
+    });
+
+    // Reveal animations
+    const reveal = nodes=>nodes.forEach((el,i)=>{
+      gsap.fromTo(el, {y:40, opacity:0, scale:0.95},
+        {y:0, opacity:1, scale:1, duration:.6, delay:Math.min(i*.05,.4), ease:'power2.out',
+         scrollTrigger:{trigger:el, start:'top 85%', toggleActions:'play none none reverse'}});
+    });
+    reveal($$('.glass'));
+    gsap.utils.toArray('[data-anim]').forEach((el,i)=>{
+      gsap.fromTo(el, {y:30, opacity:0},
+        {y:0, opacity:1, duration:.8, delay:Math.min(i*.06,.5), ease:'power2.out',
+         scrollTrigger:{trigger:el, start:'top 88%', toggleActions:'play none none reverse'}});
+    });
+
+    // Background parallax
+    gsap.to('body', {
+      backgroundPosition:'0px -150px, 0px -100px, 0px -50px', 
+      ease:'none', 
+      scrollTrigger:{start:0, end:'max', scrub:1}
+    });
+
+    // Float loop
+    gsap.utils.toArray('.float-anim').forEach((el, i) => {
+      gsap.to(el, { y:-15, duration:3 + i*0.5, ease:'sine.inOut', yoyo:true, repeat:-1, delay:i*0.5 });
+    });
+
+    // Contact mailto
+    const EMAIL_KAMU = "agen.salva@gmail.com";
+    $('#contactForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const name = encodeURIComponent($('#name').value || "");
+      const email = encodeURIComponent($('#email').value || "");
+      const msg = encodeURIComponent($('#message').value || "");
+      const subject = `Portfolio Contact from ${name}`;
+      const body = `Nama: ${name}%0AEmail: ${email}%0A%0APesan:%0A${msg}`;
+      const submitBtn = e.target.querySelector('button');
+      const originalText = submitBtn.textContent;
+      gsap.to(submitBtn, {scale:0.95, duration:.1, ease:'power2.out'}).then(()=>{
+        submitBtn.textContent = '✓ Mengirim...';
+        setTimeout(() => {
+          window.location.href = `mailto:${EMAIL_KAMU}?subject=${subject}&body=${body}`;
+          submitBtn.textContent = originalText;
+          gsap.to(submitBtn, {scale:1, duration:.2, ease:'elastic.out(1, 0.5)'});
+        }, 500);
+      });
+    });
+
+    // Cursor glow helper
+    document.addEventListener('mousemove', (e) => {
+      const interactiveEl = e.target.closest('.hoverable, button, a');
+      if (!interactiveEl) return;
+      const rect = interactiveEl.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      gsap.set(interactiveEl, {'--mouse-x': `${x}px`, '--mouse-y': `${y}px`});
+    });
+
+    // Smooth scroll fallback
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({behavior: 'smooth', block: 'start'});
+      });
+    });
+
+    // Image load fade-in
+    document.querySelectorAll('img').forEach(img => {
+      img.addEventListener('load', function() {
+        gsap.from(this, {opacity: 0, scale: 1.1, duration: 0.5, ease: 'power2.out'});
+      });
+    });
+
+    // Gradient text observer
+    const advancedObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        el.classList.add('animate-shine');
+        if (el.classList.contains('gradient-text')) {
+          gsap.to(el, {backgroundPosition: '200% 50%', duration: 2, ease: 'power2.inOut'});
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.gradient-text').forEach(el => advancedObserver.observe(el));
+  </script>
+</body>
+</html>
