@@ -342,6 +342,10 @@
 <body>
   <!-- Audio player untuk preview -->
   <audio id="audioPlayer" preload="none" crossorigin="anonymous"></audio>
+  
+  <!-- Lobby sound (dummy, isi src dengan link audio) -->
+<audio id="lobbyAudio" preload="none" loop crossorigin="anonymous" src="https://suno.com/s/3y6ujZbSxUH9gZxD">
+</audio>
 
   <!-- Enhanced page-transition layer -->
   <div id="route" class="route"></div>
@@ -361,6 +365,7 @@
       </nav>
 
       <div class="flex items-center gap-3">
+        <button id="lobbyBtn" class="px-4 py-2 rounded-xl glass" title="Lobby sound">🔇</button>
         <button id="themeBtn" class="px-4 py-2 rounded-xl glass hover:scale-105 transition-all duration-300 text-sm font-medium">🌙</button>
         <button id="menuBtn" class="md:hidden px-4 py-2 rounded-xl glass hover:scale-105 transition-all duration-300 text-sm font-medium">☰</button>
       </div>
@@ -813,6 +818,67 @@
       });
     }, { threshold: 0.5 });
     document.querySelectorAll('.gradient-text').forEach(el => advancedObserver.observe(el));
+    
+(() => {
+  const lobbyAudio = document.getElementById('lobbyAudio');
+  const lobbyBtn   = document.getElementById('lobbyBtn');
+  const audioPlayer = document.getElementById('audioPlayer');
+  if (!lobbyAudio || !lobbyBtn) return;
+
+  // === GANTI INI: isi URL audio lobby kamu ===
+  // lobbyAudio.src = 'https://example.com/lobby.mp3';
+
+  const BASE_VOL = 0.6;
+  const DUCK_VOL = 0.2;
+  const KEY = 'lobbySound';
+
+  const fadeTo = (el, target, ms=250) => {
+    const steps = 20, step = (target - el.volume) / steps, dt = ms/steps;
+    let i = 0; clearInterval(el._fadeTimer);
+    el._fadeTimer = setInterval(() => {
+      i++; el.volume = Math.max(0, Math.min(1, el.volume + step));
+      if (i >= steps) { el.volume = target; clearInterval(el._fadeTimer); }
+    }, dt);
+  };
+
+  let on = (localStorage.getItem(KEY) || 'off') === 'on';
+  lobbyBtn.textContent = on ? '🔊' : '🔇';
+  lobbyBtn.title = on ? 'Matikan lobby sound' : 'Nyalakan lobby sound';
+  lobbyAudio.volume = 0;
+
+  const firstInteract = () => {
+    if (on && lobbyAudio.src) {
+      lobbyAudio.play().then(() => fadeTo(lobbyAudio, BASE_VOL, 500)).catch(()=>{});
+    }
+    window.removeEventListener('pointerdown', firstInteract);
+  };
+  window.addEventListener('pointerdown', firstInteract, { once:true });
+
+  lobbyBtn.addEventListener('click', async () => {
+    on = !on;
+    localStorage.setItem(KEY, on ? 'on' : 'off');
+    lobbyBtn.textContent = on ? '🔊' : '🔇';
+    lobbyBtn.title = on ? 'Matikan lobby sound' : 'Nyalakan lobby sound';
+    try {
+      if (on) {
+        if (!lobbyAudio.src) { alert('Tambahkan URL src untuk lobbyAudio dulu.'); return; }
+        if (lobbyAudio.paused) await lobbyAudio.play();
+        fadeTo(lobbyAudio, BASE_VOL, 250);
+      } else {
+        fadeTo(lobbyAudio, 0, 200);
+        setTimeout(() => { try { lobbyAudio.pause(); } catch{} }, 220);
+      }
+    } catch {}
+  });
+
+  if (audioPlayer) {
+    const duck   = () => on && fadeTo(lobbyAudio, Math.min(DUCK_VOL, BASE_VOL * 0.35), 150);
+    const unduck = () => on && fadeTo(lobbyAudio, BASE_VOL, 200);
+    audioPlayer.addEventListener('play', duck);
+    audioPlayer.addEventListener('pause', unduck);
+    audioPlayer.addEventListener('ended', unduck);
+  }
+})();
   </script>
 </body>
 </html>
