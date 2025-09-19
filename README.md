@@ -23,16 +23,14 @@ OpenSource-Portofolio/
 └── index.html
 ```
 
-## 🚀 Cara Menjalankan    
-1.    
-**Clone repo**  
+## 🚀 Cara Menjalankan        
+**1. Clone repo**  
  ```text
 git clone https://github.com/abelion512/OpenSource-Portofolio.git
 cd OpenSource-Portofolio
 ```
    
-2.    
-**Jalankan lokal**  
+**2. Jalankan lokal**  
   - Buka langsung `index.html` di browser, atau    
   - Gunakan server lokal (contoh dengan Python):
 ```text
