@@ -37,7 +37,8 @@ cd OpenSource-Portofolio
   - Gunakan server lokal (contoh dengan Python):
 ```text
 python -m http.server 5173
-``` lalu akses [http://localhost:5173](http://localhost:5173)    
+```
+lalu akses [http://localhost:5173](http://localhost:5173)    
     
 ## 🛠️ Kustomisasi    
 - Ubah data dummy (Apps/Films/Music/Skills) di `<script>` dalam `index.html`.   
