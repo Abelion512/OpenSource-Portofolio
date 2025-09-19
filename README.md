@@ -1,6 +1,19 @@
-# OpenSource • Portofolio  Portofolio statis yang menampilkan **Apps**, **Films**, **Music**, dan **Skills** dengan gaya **glassmorphism**, animasi **GSAP + ScrollTrigger**, serta **Tailwind CSS**.   Live: https://abelion512.github.io/OpenSource-Portofolio/ 
+# OpenSource • Portofolio 
+
+Portofolio statis yang menampilkan **Apps**, **Films**, **Music**, dan **Skills** dengan gaya **glassmorphism**, animasi **GSAP + ScrollTrigger**, serta **Tailwind CSS**.  
+Live: https://abelion512.github.io/OpenSource-Portofolio/ 
+
 ---  
-## ✨ Fitur - **Dark/Light Mode** toggle dengan persist `localStorage` - **Animasi halus** (reveal on scroll, parallax background) - **Section Music** dengan **audio preview** (play/pause & ducking) - **Skills sebagai XP bar** (data dummy, mudah dikustom) - **Data dummy** untuk Apps/Films/Music agar cepat disesuaikan - **Tanpa framework** (HTML5 + Vanilla JS + GSAP + Tailwind CDN)  ---  ## 🗂️ Struktur Proyek (ringkas) ```text OpenSource-Portofolio/ ├── assets/ │   └── logo.svg ├── music/ │   └── *.mp3 └── index.html `   
+
+## ✨ Fitur 
+- **Dark/Light Mode** toggle dengan persist `localStorage`
+- **Animasi halus** (reveal on scroll, parallax background)
+- **Section Music** dengan **audio preview** (play/pause & ducking)
+- **Skills sebagai XP bar** (data dummy, mudah dikustom)
+- **Data dummy** untuk Apps/Films/Music agar cepat disesuaikan
+- **Tanpa framework** (HTML5 + Vanilla JS + GSAP + Tailwind CDN)
+
+## 🗂️ Struktur Proyek (ringkas) ```text OpenSource-Portofolio/ ├── assets/ │   └── logo.svg ├── music/ │   └── *.mp3 └── index.html `   
 
 ## 🚀 Cara Menjalankan    
 1.    
@@ -9,10 +22,7 @@
    
 2.    
 **Jalankan lokal**  
-   
-   
-  - Buka langsung `index.html` di browser, atau  
-   
+  - Buka langsung `index.html` di browser, atau    
   - Gunakan server lokal (contoh dengan Python): `python -m http.server 5173 ` lalu akses [http://localhost:5173](http://localhost:5173)    
     
 ## 🛠️ Kustomisasi    
