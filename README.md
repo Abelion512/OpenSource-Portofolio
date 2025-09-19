@@ -13,7 +13,14 @@ Live: https://abelion512.github.io/OpenSource-Portofolio/
 - **Data dummy** untuk Apps/Films/Music agar cepat disesuaikan
 - **Tanpa framework** (HTML5 + Vanilla JS + GSAP + Tailwind CDN)
 
-## 🗂️ Struktur Proyek (ringkas) ```text OpenSource-Portofolio/ ├── assets/ │   └── logo.svg ├── music/ │   └── *.mp3 └── index.html `   
+## 🗂️ Struktur Proyek (ringkas)
+```text
+OpenSource-Portofolio/
+├── assets/
+│   └── logo.svg
+├── music/
+│   └── *.mp3
+└── index.html   
 
 ## 🚀 Cara Menjalankan    
 1.    
