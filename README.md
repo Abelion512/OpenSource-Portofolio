@@ -14,13 +14,12 @@ Live: https://abelion512.github.io/OpenSource-Portofolio/
 - **Tanpa framework** (HTML5 + Vanilla JS + GSAP + Tailwind CDN)
 
 ## 🗂️ Struktur Proyek (ringkas)
-```text
 OpenSource-Portofolio/
 ├── assets/
 │   └── logo.svg
 ├── music/
 │   └── *.mp3
-└── index.html   
+└── index.html
 
 ## 🚀 Cara Menjalankan    
 1.    
