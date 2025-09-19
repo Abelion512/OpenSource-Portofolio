@@ -20,14 +20,16 @@ OpenSource-Portofolio/
 │   └── logo.svg
 ├── music/
 │   └── *.mp3
-└── index.html text```
+└── index.html
+```
 
 ## 🚀 Cara Menjalankan    
 1.    
 **Clone repo**  
- `git clone https://github.com/abelion512/OpenSource-Portofolio.git cd OpenSource-Portofolio  
+ `git clone https://github.com/abelion512/OpenSource-Portofolio.git
+cd OpenSource-Portofolio  
    
-2.    
+3.    
 **Jalankan lokal**  
   - Buka langsung `index.html` di browser, atau    
   - Gunakan server lokal (contoh dengan Python): `python -m http.server 5173 ` lalu akses [http://localhost:5173](http://localhost:5173)    
