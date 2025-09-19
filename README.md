@@ -26,8 +26,10 @@ OpenSource-Portofolio/
 ## 🚀 Cara Menjalankan    
 1.    
 **Clone repo**  
- `git clone https://github.com/abelion512/OpenSource-Portofolio.git
-cd OpenSource-Portofolio  
+ ```text
+git clone https://github.com/abelion512/OpenSource-Portofolio.git
+cd OpenSource-Portofolio
+```
    
 3.    
 **Jalankan lokal**  
