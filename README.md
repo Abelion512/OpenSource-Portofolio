@@ -31,10 +31,10 @@ git clone https://github.com/abelion512/OpenSource-Portofolio.git
 cd OpenSource-Portofolio
 ```
    
-3.    
+2.    
 **Jalankan lokal**  
   - Buka langsung `index.html` di browser, atau    
-  - Gunakan server lokal (contoh dengan Python): `python -m http.server 5173 ` lalu akses [http://localhost:5173](http://localhost:5173)    
+  - Gunakan server lokal (contoh dengan Python): ```python -m http.server 5173 ``` lalu akses [http://localhost:5173](http://localhost:5173)    
     
 ## 🛠️ Kustomisasi    
 - Ubah data dummy (Apps/Films/Music/Skills) di `<script>` dalam `index.html`.   
