@@ -46,7 +46,7 @@ lalu akses [http://localhost:5173](http://localhost:5173)
 - Ganti logo di `assets/logo.svg`.  
       
 ## 📸 Preview   
-- Tambahkan screenshot (`assets/preview.png`) agar pengunjung repo bisa langsung lihat tampilan UI.  
+- Tambahkan screenshot (`assets/preview.jpg`) agar pengunjung repo bisa langsung lihat tampilan UI.  
     
 ## 🤝 Kontribusi   
 1. Fork repo ini   
